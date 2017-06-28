@@ -17,8 +17,8 @@ public class FilaControl {
 		LCD.clear();
 		LCD.drawString("connected", 0, 0);
 		scanLoop(input);
+		Motor.A.setSpeed(200);
 	}
-	
 	private static void scanLoop(DataInputStream input){
 		int state = 0;
 		while (!Button.ESCAPE.isDown()) {
@@ -28,10 +28,23 @@ public class FilaControl {
 				e.printStackTrace();
 			}
 				
-			if(state!= 0){
+			if(state != 0){
 				LCD.clear();
 				LCD.drawString("state: " + state, 0, 0);
 			}
+			
+			if (state == 1) {
+				Motor.A.forward();
+				togglePen();
+			}
+			else if (state == 2)  {
+				Motor.A.stop();
+				togglePen();
+			}
 		}
+	}
+	public static void  togglePen() {
+		Motor.B.rotate(45);
+		Motor.B.rotate(-45);
 	}
 }
